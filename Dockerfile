@@ -2,7 +2,9 @@ FROM node:0.10
 MAINTAINER Rony Dray <contact@obigroup.fr>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+	build-essential \
     python-pip \
+    imagemagick \
     curl \
     nano \
     sudo
@@ -13,15 +15,15 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install supervisor
 
+# Install CoffeeScript
+RUN npm install -g \
+    coffee-script
+
 # Configure Supervisor.
 ADD supervisor/supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /var/log/supervisor \
 && chmod 777 /var/log/supervisor \
 && /usr/local/bin/supervisord -c /etc/supervisord.conf
-
-# Install CoffeeScript
-RUN npm install -g \
-    coffee-script
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
@@ -39,11 +41,12 @@ RUN cd /usr/cozy/cozy-monitor; npm install --production
 RUN git clone https://github.com/obigroup/cozy-controller /usr/local/lib/node_modules/cozy-controller
 RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production;
 
-#Expose Proxy port
-EXPOSE 9104
-
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
+RUN chmod 0644 /etc/supervisor/conf.d/*
+
+#Expose Proxy port
+EXPOSE 9104
 
 ADD sh/run.sh /home/run.sh
 WORKDIR /home

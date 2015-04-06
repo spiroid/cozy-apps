@@ -4,7 +4,8 @@ export COUCH_PORT=$COUCHDB_PORT_5984_TCP_PORT
 export INDEXER_HOST=$DATAINDEXER_PORT_9102_TCP_ADDR
 export INDEXER_PORT=$DATAINDEXER_PORT_9102_TCP_PORT
 
-chmod 0644 /etc/supervisor/conf.d/*
+while ! curl -s $COUCHDB_PORT_5984_TCP_ADDR:$COUCHDB_PORT_5984_TCP_PORT; do sleep 5; done
+while ! curl -s $DATAINDEXER_PORT_9102_TCP_ADDR:$DATAINDEXER_PORT_9102_TCP_PORT; do sleep 5; done
 
 /usr/local/lib/node_modules/cozy-controller/bin/cozy-controller & sleep 5
 while ! curl -s 127.0.0.1:9002; do sleep 5; done
