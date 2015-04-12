@@ -2,15 +2,14 @@ FROM node:0.10
 MAINTAINER Rony Dray <contact@obigroup.fr>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	build-essential \
+    build-essential \
     python-pip \
-    imagemagick \
     curl \
     nano \
-    sudo
+    sudo \
+    && apt-get clean
 
 # Clean APT cache for a lighter image
-RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install supervisor
@@ -32,21 +31,25 @@ RUN useradd -M cozy \
 
 # Need ENV VARS:
 ENV NODE_ENV production
+ENV COUCH_HOST couchdb
+ENV COUCH_PORT 5984
+ENV INDEXER_HOST dataindexer
+ENV INDEXER_PORT 9102
 
 # Install Cozy Monitor
-RUN git clone https://github.com/obigroup/cozy-monitor /usr/cozy/cozy-monitor
+RUN git clone https://github.com/cozy/cozy-monitor /usr/cozy/cozy-monitor
 RUN cd /usr/cozy/cozy-monitor; npm install --production
 
 # Install Cozy Controller
-RUN git clone https://github.com/obigroup/cozy-controller /usr/local/lib/node_modules/cozy-controller
-RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production;
+RUN git clone https://github.com/cozy/cozy-controller /usr/local/lib/node_modules/cozy-controller
+RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production
 
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
 #Expose Proxy port
-EXPOSE 9104
+# EXPOSE 9104
 
 ADD sh/run.sh /home/run.sh
 WORKDIR /home
