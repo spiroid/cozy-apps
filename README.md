@@ -4,11 +4,11 @@ docker build -t obigroup/cozy-cozyapps .
 ```
 
 # Run:
-Need : [Cozy CouchDb](https://registry.hub.docker.com/u/obigroup/cozy-couchdb/) and [Cozy Dataindexer](https://registry.hub.docker.com/u/obigroup/cozy-dataindexer/) 
+Dependencies : [Cozy CouchDb](https://registry.hub.docker.com/u/obigroup/cozy-couchdb/) and [Cozy Dataindexer](https://registry.hub.docker.com/u/obigroup/cozy-dataindexer/) 
 With fig :
 ```
 cozyapps:
-    build: cozyapps
+    image: obigroup/cozy-cozyapps
     links:
     - couchdb
     - dataindexer
