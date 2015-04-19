@@ -48,7 +48,6 @@ RUN cd /usr/cozy/cozy-monitor; npm install --production
 
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
-ADD supervisor/postfix.conf /etc/supervisor/conf.d/postfix.conf
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
 #Expose Proxy port
