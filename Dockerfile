@@ -1,7 +1,8 @@
 FROM node:0.10
 MAINTAINER Rony Dray <contact@obigroup.fr>
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install --quiet --assume-yes --no-install-recommends \
     build-essential \
     python-pip \
     curl \
@@ -14,14 +15,15 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install supervisor
 
-# Install CoffeeScript
+# Install CoffeeScript & Cozy Controller
 RUN npm install -g \
-    coffee-script
+    coffee-script \
+    cozy-controller
 
 # Configure Supervisor.
 ADD supervisor/supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /var/log/supervisor \
-&& chmod 777 /var/log/supervisor \
+&& chmod 774 /var/log/supervisor \
 && /usr/local/bin/supervisord -c /etc/supervisord.conf
 
 # Create Cozy users, without home directories.
@@ -41,11 +43,12 @@ RUN git clone https://github.com/cozy/cozy-monitor /usr/cozy/cozy-monitor
 RUN cd /usr/cozy/cozy-monitor; npm install --production
 
 # Install Cozy Controller
-RUN git clone https://github.com/cozy/cozy-controller /usr/local/lib/node_modules/cozy-controller
-RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production
+# RUN git clone https://github.com/cozy/cozy-controller /usr/local/lib/node_modules/cozy-controller
+# RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production
 
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
+ADD supervisor/postfix.conf /etc/supervisor/conf.d/postfix.conf
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
 #Expose Proxy port
