@@ -50,6 +50,10 @@ RUN cd /usr/cozy/cozy-monitor; npm install --production
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
+#Add file for backup/restore
+ADD sh/backup.sh /home/backup.sh
+ADD sh/restore.sh /home/restore.sh
+
 #Expose Proxy port
 # EXPOSE 9104
 
