@@ -59,4 +59,5 @@ ADD sh/restore.sh /home/restore.sh
 
 ADD sh/run.sh /home/run.sh
 WORKDIR /home
+VOLUME ["/usr/local/cozy/"]
 CMD ["/bin/sh", "run.sh"]
