@@ -1,10 +1,9 @@
 FROM node:0.10
-MAINTAINER Rony Dray <contact@obigroup.fr>
+MAINTAINER Rony Dray <contact@obigroup.fr>, Jonathan Dray <jonathan.dray@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install --quiet --assume-yes --no-install-recommends \
     build-essential \
-    python-pip \
     curl \
     nano \
     sudo \
@@ -13,18 +12,11 @@ RUN apt-get update && apt-get install --quiet --assume-yes --no-install-recommen
 # Clean APT cache for a lighter image
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install supervisor
-
 # Install CoffeeScript & Cozy Controller
 RUN npm install -g \
     coffee-script \
-    cozy-controller
-
-# Configure Supervisor.
-ADD supervisor/supervisord.conf /etc/supervisord.conf
-RUN mkdir -p /var/log/supervisor \
-&& chmod 774 /var/log/supervisor \
-&& /usr/local/bin/supervisord -c /etc/supervisord.conf
+    cozy-controller \
+    cozy-monitor
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
@@ -38,26 +30,15 @@ ENV COUCH_PORT 5984
 ENV INDEXER_HOST dataindexer
 ENV INDEXER_PORT 9102
 
-# Install Cozy Monitor
-RUN git clone https://github.com/cozy/cozy-monitor /usr/cozy/cozy-monitor
-RUN cd /usr/cozy/cozy-monitor; npm install --production
+# Expose port
+EXPOSE 9104
 
-# Install Cozy Controller
-# RUN git clone https://github.com/cozy/cozy-controller /usr/local/lib/node_modules/cozy-controller
-# RUN cd /usr/local/lib/node_modules/cozy-controller; npm install --production
-
-# Import Supervisor configuration files.
-ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
-RUN chmod 0644 /etc/supervisor/conf.d/*
-
-#Add file for backup/restore
-ADD sh/backup.sh /home/backup.sh
-ADD sh/restore.sh /home/restore.sh
-
-#Expose Proxy port
-# EXPOSE 9104
-
-ADD sh/run.sh /home/run.sh
-WORKDIR /home
 VOLUME ["/usr/local/cozy/"]
-CMD ["/bin/sh", "run.sh"]
+
+ADD sh/init.sh /usr/local/bin/cozy-init.sh
+RUN chmod +x /usr/local/bin/cozy-init.sh
+
+WORKDIR /usr/local/lib/node_modules/cozy-controller/build/
+
+CMD [ "node", "server.js" ]
+#CMD ["/bin/sh", "run.sh"]
