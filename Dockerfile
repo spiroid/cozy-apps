@@ -15,8 +15,8 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Install CoffeeScript & Cozy Controller
 RUN npm install -g \
     coffee-script \
-    cozy-controller \
-    cozy-monitor
+    cozy-controller@2.0.30 \
+    cozy-monitor@1.2.27
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
