@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install --quiet --assume-yes --no-install-recommen
     curl \
     nano \
     sudo \
+    imagemagick \
+    sqlite3 \
     && apt-get clean
 
 # Clean APT cache for a lighter image
@@ -22,6 +24,7 @@ RUN npm install -g \
 RUN useradd -M cozy \
 && useradd -M cozy-data-system \
 && useradd -M cozy-home
+
 
 # Need ENV VARS:
 ENV NODE_ENV production
@@ -41,4 +44,3 @@ RUN chmod +x /usr/local/bin/cozy-init.sh
 WORKDIR /usr/local/lib/node_modules/cozy-controller/build/
 
 CMD [ "node", "server.js" ]
-#CMD ["/bin/sh", "run.sh"]
