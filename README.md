@@ -1,30 +1,63 @@
-# Build
+# Cozy controller
+
+## Pull the image
 
 ```
-docker build -t spiroid/cozy-controller .
+$ docker pull spiroid/cozy-controller
 ```
 
 
-# Dependencies
-
-[Cozy CouchDb](https://registry.hub.docker.com/u/spiroid/cozy-couchdb/) and [Cozy Dataindexer](https://registry.hub.docker.com/u/spiroid/cozy-data-indexer/) 
-
-
-# Run
-
-With docker-compose :
+## Build it yourself
 
 ```
+$ git clone git@github.com:spiroid/cozy-controller.git
+$ cd cozy-controller
+$ doker build -t spiroid/cozy-controller .
+```
+
+
+## Run:
+
+With docker-compose:
+
+```
+configuration:
+    image: spiroid/cozy-conf
+
+couchdata:
+    image: spiroid/cozy-couchdb-data
+
+couchdb:
+    image: spiroid/cozy-couchdb
+    volumes_from:
+        - couchdata
+        - configuration
+    volumes:
+        - $HOME/cozy-cloud/var/log/couchdb:/var/log/couchdb
+
+dataindexer:
+    image: spiroid/cozy-data-indexer
+    hostname: dataindexer
+    volumes_from:
+        - configuration
+
 controller:
     image: spiroid/cozy-controller
     links:
-    - couchdb
-    - dataindexer
+        - couchdb
+        - dataindexer
     volumes_from:
-    - couchdb
+        - configuration
+        - dataindexer
+    volumes:
+        - $HOME/cozy-cloud/var/log/cozy:/usr/local/var/log/cozy
+    ports:
+        - "127.0.0.1:9104:9104"
 ```
 
-# Init
+replace $HOME by your actual home directory
+
+## Init the cozy stack
 
 When the container is running and your cozy cloud instance is not yet initialized, there is an init script to launch.
 Given that your container name is cozy-container :
@@ -33,9 +66,19 @@ Given that your container name is cozy-container :
   docker exec cozy-container cozy-init.sh
 ```
 
+This installs the Home, Data-System and proxy applications.
 
-# More about updates
 
-```
-https://forum.cozy.io/t/deployer-cozy-avec-docker-et-des-containers-autonomes/468
-```
+## Related images
+
+This configuration image was created to work with the following images:
+
+  * [cozy conf](https://github.com/spiroid/cozy-conf)
+  * [cozy couchdb data](https://github.com/spiroid/cozy-couchdb-data) 
+  * [cozy couchdb](https://github.com/spiroid/cozy-couchdb)
+  * [cozy data indexer](https://github.com/spiroid/cozy-data-indexer)
+
+
+# Inspirations
+
+ * https://forum.cozy.io/t/deployer-cozy-avec-docker-et-des-containers-autonomes/468
