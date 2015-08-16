@@ -37,8 +37,7 @@ EXPOSE 9104
 
 VOLUME ["/usr/local/cozy/"]
 
-ADD sh/init.sh /usr/local/bin/cozy-init.sh
-RUN chmod +x /usr/local/bin/cozy-init.sh
+ADD init.sh /usr/local/bin/cozy-init.sh
 
 WORKDIR /usr/local/lib/node_modules/cozy-controller/build/
 
