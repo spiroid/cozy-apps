@@ -21,8 +21,8 @@ RUN npm install -g \
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
-&& useradd -M cozy-data-system \
-&& useradd -M cozy-home
+&&  useradd -M cozy-data-system \
+&&  useradd -M cozy-home
 
 
 # Need ENV VARS:
