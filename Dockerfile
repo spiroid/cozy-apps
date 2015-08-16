@@ -34,7 +34,7 @@ ENV INDEXER_HOST dataindexer
 ENV INDEXER_PORT 9102
 
 # Expose port
-EXPOSE 9104
+EXPOSE 9002
 
 VOLUME ["/usr/local/cozy/"]
 

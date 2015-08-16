@@ -52,7 +52,7 @@ controller:
     volumes:
         - $HOME/cozy-cloud/var/log/cozy:/usr/local/var/log/cozy
     ports:
-        - "127.0.0.1:9104:9104"
+        - "127.0.0.1:9002:9002"
 ```
 
 replace $HOME by your actual home directory
