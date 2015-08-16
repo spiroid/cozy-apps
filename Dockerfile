@@ -2,17 +2,16 @@ FROM node:0.10
 MAINTAINER Rony Dray <contact@obigroup.fr>, Jonathan Dray <jonathan.dray@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install --quiet --assume-yes --no-install-recommends \
-    build-essential \
-    curl \
-    nano \
-    sudo \
-    imagemagick \
-    sqlite3 \
-    && apt-get clean
-
-# Clean APT cache for a lighter image
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update \
+&&  apt-get install --quiet --assume-yes --no-install-recommends \
+      build-essential \
+      curl \
+      nano \
+      sudo \
+      imagemagick \
+      sqlite3 \
+&&  apt-get clean \
+&&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install CoffeeScript & Cozy Controller
 RUN npm install -g \
@@ -27,11 +26,11 @@ RUN useradd -M cozy \
 
 
 # Need ENV VARS:
-ENV NODE_ENV production
-ENV COUCH_HOST couchdb
-ENV COUCH_PORT 5984
-ENV INDEXER_HOST dataindexer
-ENV INDEXER_PORT 9102
+ENV NODE_ENV production \
+    COUCH_HOST couchdb \
+    COUCH_PORT 5984 \
+    INDEXER_HOST dataindexer \
+    INDEXER_PORT 9102
 
 # Expose port
 EXPOSE 9104
