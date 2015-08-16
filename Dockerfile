@@ -33,7 +33,7 @@ ENV NODE_ENV production \
     INDEXER_PORT 9102
 
 # Expose port
-EXPOSE 9104
+EXPOSE 9002
 
 VOLUME ["/usr/local/cozy/"]
 
