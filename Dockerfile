@@ -26,11 +26,11 @@ RUN useradd -M cozy \
 
 
 # Need ENV VARS:
-ENV NODE_ENV production \
-    COUCH_HOST couchdb \
-    COUCH_PORT 5984 \
-    INDEXER_HOST dataindexer \
-    INDEXER_PORT 9102
+ENV NODE_ENV=production \
+	COUCH_HOST=couchdb \
+	COUCH_PORT=5984 \
+	INDEXER_HOST=dataindexer \
+	INDEXER_PORT=9102
 
 # Expose port
 EXPOSE 9002 9104
