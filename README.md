@@ -18,7 +18,9 @@ $ doker build -t spiroid/cozy-controller .
 
 ## Run:
 
-With docker-compose:
+### With docker-compose
+
+A sample docker-compose.yml configuration file:
 
 ```
 configuration:
@@ -32,8 +34,6 @@ couchdb:
     volumes_from:
         - couchdata
         - configuration
-    volumes:
-        - $HOME/cozy-cloud/var/log/couchdb:/var/log/couchdb
 
 dataindexer:
     image: spiroid/cozy-data-indexer
@@ -49,14 +49,53 @@ controller:
     volumes_from:
         - configuration
         - dataindexer
-    volumes:
-        - $HOME/cozy-cloud/var/log/cozy:/usr/local/var/log/cozy
     ports:
         - "127.0.0.1:9002:9002"
         - "127.0.0.1:9104:9104"
 ```
 
-replace $HOME by your actual home directory
+
+You can also have log files written in a specific directory on your host file system.  
+In this case, replace the couchdb and controller section of the above configuration file by
+the following:
+
+```
+couchdb:
+    image: spiroid/cozy-couchdb
+    volumes_from:
+        - couchdata
+        - configuration
+    volumes:
+        - ./log/couchdb:/var/log/couchdb
+
+controller:
+    image: spiroid/cozy-controller
+    links:
+        - couchdb
+        - dataindexer
+    volumes_from:
+        - configuration
+        - dataindexer
+    volumes:
+        - ./log/cozy:/var/log/cozy
+    ports:
+        - "127.0.0.1:9002:9002"
+        - "127.0.0.1:9104:9104"
+```
+
+
+For this to work, you have to create the logs directories:
+
+```
+mkdir -p log/couchdb log/cozy
+```
+
+and make sure they have write permissions:
+
+```
+chmod -R 777 log
+```
+
 
 ## Init the cozy stack
 
