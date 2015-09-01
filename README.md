@@ -32,8 +32,6 @@ couchdb:
     volumes_from:
         - couchdata
         - configuration
-    volumes:
-        - $HOME/cozy-cloud/var/log/couchdb:/var/log/couchdb
 
 dataindexer:
     image: spiroid/cozy-data-indexer
@@ -49,8 +47,6 @@ controller:
     volumes_from:
         - configuration
         - dataindexer
-    volumes:
-        - $HOME/cozy-cloud/var/log/cozy:/usr/local/var/log/cozy
     ports:
         - "127.0.0.1:9002:9002"
         - "127.0.0.1:9104:9104"
