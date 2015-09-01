@@ -18,8 +18,8 @@ RUN apt-get update \
 # Install CoffeeScript & Cozy Controller
 RUN npm install -g \
     coffee-script \
-    cozy-controller@2.0.30 \
-    cozy-monitor@1.2.27
+    cozy-controller@2.0.31 \
+    cozy-monitor@1.2.29
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
