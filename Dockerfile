@@ -6,10 +6,12 @@ RUN apt-get update \
 &&  apt-get install --quiet --assume-yes --no-install-recommends \
       build-essential \
       curl \
-      nano \
-      sudo \
       imagemagick \
+      libffi-dev \
+      nano \
+      python-dev \
       sqlite3 \
+      sudo \
 &&  apt-get clean \
 &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
