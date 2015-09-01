@@ -31,6 +31,7 @@ couchdata:
 
 couchdb:
     image: spiroid/cozy-couchdb
+    restart: always
     volumes_from:
         - couchdata
         - configuration
@@ -38,11 +39,13 @@ couchdb:
 dataindexer:
     image: spiroid/cozy-data-indexer
     hostname: dataindexer
+    restart: always
     volumes_from:
         - configuration
 
 controller:
     image: spiroid/cozy-controller
+    restart: always
     links:
         - couchdb
         - dataindexer
@@ -62,6 +65,7 @@ the following:
 ```
 couchdb:
     image: spiroid/cozy-couchdb
+    restart: always
     volumes_from:
         - couchdata
         - configuration
@@ -70,6 +74,7 @@ couchdb:
 
 controller:
     image: spiroid/cozy-controller
+    restart: always
     links:
         - couchdb
         - dataindexer
