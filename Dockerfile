@@ -34,7 +34,7 @@ ENV NODE_ENV=production \
 # Expose port
 EXPOSE 9002 9104
 
-VOLUME ["/usr/local/cozy/", "/usr/local/var/log/cozy"]
+VOLUME ["/usr/local/cozy/", "/usr/local/var/log/cozy", "/usr/local/cozy-indexer/cozy-data-indexer"]
 
 ADD init.sh /usr/local/bin/cozy-init.sh
 
