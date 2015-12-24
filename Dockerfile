@@ -18,8 +18,8 @@ RUN apt-get update \
 # Install CoffeeScript & Cozy Controller
 RUN npm install -g \
     coffee-script \
-    cozy-controller@2.0.34 \
-    cozy-monitor@1.2.30
+    cozy-controller \
+    cozy-monitor
 
 # Create Cozy users, without home directories.
 RUN useradd -M cozy \
@@ -29,15 +29,13 @@ RUN useradd -M cozy \
 
 # Need ENV VARS:
 ENV NODE_ENV=production \
-	COUCH_HOST=couchdb \
-	COUCH_PORT=5984 \
-	INDEXER_HOST=dataindexer \
-	INDEXER_PORT=9102
+    COUCH_HOST=couchdb \
+    COUCH_PORT=5984
 
 # Expose port
 EXPOSE 9002 9104
 
-VOLUME ["/usr/local/cozy/"]
+VOLUME ["/usr/local/cozy/", "/usr/local/cozy-indexer/cozy-data-indexer"]
 
 ADD init.sh /usr/local/bin/cozy-init.sh
 
