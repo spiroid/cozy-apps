@@ -28,13 +28,13 @@ RUN useradd -M cozy \
 
 # Need ENV VARS:
 ENV NODE_ENV=production \
-	COUCH_HOST=couchdb \
-	COUCH_PORT=5984
+    COUCH_HOST=couchdb \
+    COUCH_PORT=5984
 
 # Expose port
 EXPOSE 9002 9104
 
-VOLUME ["/usr/local/cozy/", "/usr/local/var/log/cozy", "/usr/local/cozy-indexer/cozy-data-indexer"]
+VOLUME ["/usr/local/cozy/", "/usr/local/var/log/cozy", "/usr/local/var/cozy/data-system/indexes"]
 
 ADD init.sh /usr/local/bin/cozy-init.sh
 
