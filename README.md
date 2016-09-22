@@ -114,6 +114,17 @@ Given that your container name is cozy-container :
 This installs the Home, Data-System and proxy applications.
 
 
+## Update nodejs 0.10 to 4.5
+
+To complete your update you need to reinstall your stack.
+Given that your container name is cozy-controller :
+
+```
+docker exec -ti cozy-controller cozy-monitor install-cozy-stack
+docker exec -ti cozy-controller cozy-monitor reinstall-missing-app
+```
+
+
 ## Related images
 
 This configuration image was created to work with the following images:
