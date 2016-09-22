@@ -1,4 +1,4 @@
-FROM node:0.10
+FROM node:4.5
 MAINTAINER Rony Dray <contact@obigroup.fr>, Jonathan Dray <jonathan.dray@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
