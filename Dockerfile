@@ -26,7 +26,12 @@ RUN useradd -M cozy \
 &&  useradd -M cozy-data-system \
 &&  useradd -M cozy-home
 
-# Need ENV VARS:
+# Container entry point
+COPY docker-entrypoint.sh /usr/local/bin/
+
+# Env variables
+# These are required by cozy to locate the
+# CouchDB instance location
 ENV NODE_ENV=production \
     COUCH_HOST=couchdb \
     COUCH_PORT=5984
@@ -40,4 +45,5 @@ ADD init.sh /usr/local/bin/cozy-init.sh
 
 WORKDIR /usr/local/lib/node_modules/cozy-controller/build/
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD [ "node", "server.js" ]
