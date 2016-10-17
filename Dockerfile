@@ -26,6 +26,8 @@ RUN useradd -M cozy \
 &&  useradd -M cozy-data-system \
 &&  useradd -M cozy-home
 
+# Container entry point
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Need ENV VARS:
 ENV NODE_ENV=production \
@@ -41,4 +43,5 @@ ADD init.sh /usr/local/bin/cozy-init.sh
 
 WORKDIR /usr/local/lib/node_modules/cozy-controller/build/
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD [ "node", "server.js" ]
